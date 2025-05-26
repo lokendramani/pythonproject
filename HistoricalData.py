@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 import time
 import os
 
-API_KEY = "10632651d772428z(Jp4v6315372294l"
-API_SECRET = "828l@q^13&466ZJOa44pWg1392Z9lX12"
-SESSION_TOKEN = "51616696"
+API_KEY = ""
+API_SECRET = ""
+SESSION_TOKEN = ""
 
 
 # Breeze login
