@@ -7,13 +7,17 @@ def round_to_nearest_50(value):
 def generate_strike_range(atm, spread=1000, step=50):
     return list(range(atm - spread, atm + spread + 1, step))
 
-def get_monthly_expiry_dates(start_date, end_date):
+def get_monthly_expiry_date(symbol, year, month ):
     # Returns list of last Thursday of each month between dates
     import pandas as pd
-    expiry_dates = []
-    d = pd.date_range(start=start_date, end=end_date, freq='B')  # business days
-    for month, group in d.groupby(d.month):
-        thursdays = group[group.weekday == 3]  # 3 = Thursday
-        if not thursdays.empty:
-            expiry_dates.append(thursdays[-1].date())
-    return expiry_dates
+    df = pd.read_csv("data/expiry_data")
+    expiry_row = df[
+        (df['symbol'].str.upper() == symbol.upper()) &
+        (df['year'] == year) &
+        (df['month'] == month) &
+        (df['expiry_type'].str.lower() == 'monthly')
+    ]
+    if not expiry_row.empty:
+        return expiry_row["expiry_date"].iloc[0]  # return the first matching expiry date
+    else:
+        return None
