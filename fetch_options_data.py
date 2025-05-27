@@ -4,7 +4,7 @@ import time
 from datetime import datetime, timedelta
 from breeze_connect import BreezeConnect
 from utils import round_to_nearest_50, generate_strike_range, get_monthly_expiry_dates
-from config import API_KEY, API_SECRET, SESSION_TOKEN
+from localConfiguration import API_KEY, API_SECRET, SESSION_TOKEN
 
 # Init Breeze
 breeze = BreezeConnect(api_key=API_KEY)
