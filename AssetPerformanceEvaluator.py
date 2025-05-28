@@ -10,13 +10,26 @@ breeze.generate_session(api_secret=localConfiguration.API_SECRET, session_token=
 
 # ETF symbol to name map
 etf_map = {
-    "ICIGOL": "ICICI Gold", "ICIPIT": "ICICI IT", "ICIPRI": "ICICI Private Bank",
-    "MOTDEF": "Motilal Defensives", "ICINIF": "ICICI Nifty", "MOTNIF": "Motilal Nifty",
-    "ICIFMC": "ICICI FMCG", "ICIOIL": "ICICI Oil & Gas", "MIRFIN": "Mirae Finance",
-    "ICICON": "ICICI Consumption", "MONET1": "Motilal Nifty Next 50", "SBIETF": "SBI ETF",
-    "SBIINFR": "SBI Infra", "UTIBNK": "UTI Banking", "UTICON": "UTI Consumption",
-    "UTINIF": "UTI Nifty", "UTINIFR": "UTI Nifty Realty", "UTINIFJ": "UTI Nifty Jr",
-    "UTINIFT": "UTI Nifty Total", "UTIPSU": "UTI PSU"
+    "ICIGOL": "ICICI PRUDENTIAL GOLD ETF",
+    "ICIPIT": "ICICI PRUDENTIAL NIFTY IT ETF",
+    "ICIPRI": "ICICI PRU NIFTY PVT BANK ETF",
+    "MOTDEF": "MOTILAL OSWAL NFTY IND DEF ETF",
+    "ICINIF": "ICICI PRUDENTIAL NIFTY 50 ETF",
+    "ICICON":"ICICI PRUD CONSUMPTION ETF",
+    "MOTNIF": "MOTILAL OSWAL NIFTY 500 ETF",
+    "ICIFMC": "ICICI PRU NIFTY FMCG ETF",
+    "ICIOIL": "ICICI PRUD NIFTY OIL & GAS ETF",
+    "MIRFIN": "MIRAE ASSET NIFTY FIN SERV ETF",
+    "MONET1": "MOTILAL OSWAL NIFTY REALTY ETF",
+    "CPSETF":"CPSE ETF",
+    "ICIPBE":"ICICI PRU NIFTY BANK ETF",
+    "NIPPHA":"NIPPON INDIA NIFTY PHARMA ETF",
+    "ICIMET":"ICICI PRUD NIFTY METAL ETF",
+"ICIPSE":"ICICI PRUDENTIAL SILVER ETF",
+"ICIAUT":"ICICI PRU NIFTY AUTO ETF",
+"ICIPSU":"ICICI PRUDEN NIF PSU BANK ETF",
+"ICIINF":"ICICI Prudent Nifty Infra ETF",
+"TATNID":"TATA NIFTY INDIA DIGITAL ETF",
 }
 
 symbols = list(etf_map.keys())
