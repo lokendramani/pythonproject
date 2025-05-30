@@ -35,7 +35,7 @@ etf_map = {
 symbols = list(etf_map.keys())
 
 # -------------------- Date Setup --------------------
-end_date = datetime.today() - timedelta(days=1)
+end_date = datetime.today() #- timedelta(days=1)
 start_date = end_date - timedelta(days=30)
 
 def format_date(dt):
