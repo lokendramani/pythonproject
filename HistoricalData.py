@@ -19,10 +19,12 @@ holiday_dates = set(holiday_df["TradingDate"])
 # === Load Expiry Data ===
 expiry_df = pd.read_csv("data/config/EXPIRY_DATA.csv")
 expiry_df = expiry_df[expiry_df["expiry_type"] == 'MONTHLY']
-expiry_df["expiry_date"] = pd.to_datetime(expiry_df["expiry_date"])
+expiry_df["start_day"] = pd.to_datetime(expiry_df["start_day"], format="%d-%b-%Y")
+expiry_df["expiry_date"] = pd.to_datetime(expiry_df["expiry_date"], format="%d-%b-%Y")
 
 # === Config ===
-start_day = datetime(2025, 5, 1)  # adjust this as needed
+# start_day parameter is used to fetching data for expiry belong to this month.
+start_day = datetime(2024, 10, 1)
 api_call_count = 0
 
 
@@ -80,6 +82,15 @@ def get_nifty_open_price(date):
         print(f"⚠️ Error fetching NIFTY open price for {symbol}: {from_date} to {to_date}: {e}")
         return None
 
+def get_expiry_row_for_date(date, expiry_df):
+    # Find the row where date is between start_day and expiry_date
+    while not is_trading_day(date):
+        date += timedelta(days=1)
+        continue
+    matched = expiry_df[(expiry_df["start_day"] <= date) & (expiry_df["expiry_date"] >= date)]
+    if not matched.empty:
+        return matched.iloc[0]  # ✅ Return the first matching row
+    return None
 
 def get_option_data(date, expiry_date, strike_price, right):
     global api_call_count
@@ -105,18 +116,19 @@ def get_option_data(date, expiry_date, strike_price, right):
 
 
 # === Main Loop ===
-for _, row in expiry_df.iterrows():
+row = get_expiry_row_for_date(start_day, expiry_df)
+if row is not None:
+    current_day = row["start_day"]
     expiry_date = row["expiry_date"]
     symbol = row["symbol"]
-
-    current_day = start_day
+    # Fetch data from start and end day of expiry
     while current_day <= expiry_date:
         if not is_trading_day(current_day):
             current_day += timedelta(days=1)
             continue
 
-        #nifty_open = get_nifty_open_price(current_day)
-        nifty_open,nifty_high, nifty_low = get_nifty_ohl(current_day)
+        # nifty_open = get_nifty_open_price(current_day)
+        nifty_open, nifty_high, nifty_low = get_nifty_ohl(current_day)
         if not nifty_open or not nifty_high or not nifty_low:
             print(f"Skipping {current_day.date()} due to missing price data.")
             current_day += timedelta(days=1)
@@ -139,8 +151,13 @@ for _, row in expiry_df.iterrows():
                     filepath = os.path.join(day_dir, filename)
                     df.to_csv(filepath, index=False)
                     print(f"✅ Saved: {filepath}")
-                time.sleep(0.5)  # Prevent rate limiting
+                time.sleep(0.1)  # Prevent rate limiting
 
         # ✅ Print daily API usage
         print(f"📊 {current_day.date()} → API calls used so far: {api_call_count}")
         current_day += timedelta(days=1)
+
+else:
+    print("⚠️ No matching expiry window for", start_day.date())
+
+
